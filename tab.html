@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <style>
+        body{
+            color: #000;
+            font-family: "黑体"
+        }
+        #myNavbar{
+            width: 700px;
+            height: 100px;
+            border: 1px solid red;
+            margin: 0 auto;
+        }
+        #myNavbar ul li{
+            display: inline-block;
+            padding: 10px;
+        }
+        #myNavbar ul li a{
+            text-decoration: none;
+        }
+        .hkDiv{
+            width: 700px;
+            height: 3px;
+            background: #666;
+        }
+        .active a{
+            color: pink
+        }
+        span{
+            position: absolute;
+            height: 3px;
+            z-index: 33;
+            background: pink;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+<div id="myNavbar" class="Nav">
+    <ul>
+        <li class="active"><a href="#">首页</a></li>
+        <li><a href="#">励志名言</a></li>
+        <li ><a href="#">励志文章</a></li>
+        <li><a href="#">励志故事</a></li>
+        <li><a href="#">名人名言</a></li>
+        <li><a href="#">经典语录</a></li>
+        <li><a href="#">励志演讲</a></li>
+    </ul>
+    <div class="hkDiv"><span></span></div>
+</div>
+</div>
+<script>
+    $.fn.NavSlither = function () {
+    var $target=$(this),
+    $navUl=$("ul",$target),
+    $navLi=$("li",$navUl),
+    $navHua=$(".hkDiv",$target),
+    $navSpan=$("span",$navHua);
+    //得到当前页面滑块的初始值
+    var index=$navLi.index($target.find('ul li.active'));
+    $activeLi=$navLi.eq(index);
+    activeWidth=$activeLi.innerWidth();
+    activeLeft=$activeLi.position().left;
+    $navSpan.css({
+        width: activeWidth+"px",
+        left: activeLeft+"px"
+    });
+    //鼠标移上时的效果
+    $navLi.hover(function() {
+        var currentIndex=$navLi.index(this);
+        var currentWidth=$navLi.eq(currentIndex).innerWidth();
+        var currentLeft=$navLi.eq(currentIndex).position().left;
+        for (var i = 0; i < $navLi.length; i++) {
+            $navLi.eq(i).removeClass('active')
+        };
+        $navSpan.stop().animate({left:currentLeft,width:currentWidth}, "fast");
+        $navLi.eq(currentIndex).addClass('active');
+    });
+}
+$(function () {
+    $('#myNavbar').NavSlither();
+});
+</script>
+</body>
+</html>
